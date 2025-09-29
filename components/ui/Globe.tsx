@@ -124,20 +124,35 @@ export function Globe({ globeConfig, data }: WorldProps) {
     for (let i = 0; i < arcs.length; i++) {
       const arc = arcs[i];
       const rgb = hexToRgb(arc.color) as { r: number; g: number; b: number };
-      points.push({
-        size: defaultProps.pointSize,
-        order: arc.order,
-        color: arc.color,
-        lat: arc.startLat,
-        lng: arc.startLng,
-      });
-      points.push({
-        size: defaultProps.pointSize,
-        order: arc.order,
-        color: arc.color,
-        lat: arc.endLat,
-        lng: arc.endLng,
-      });
+      // remove the first let points = [] and properly type once
+interface GlobePoint {
+  size: number;
+  order: number;
+  color: string;
+  lat: number;
+  lng: number;
+}
+const points: GlobePoint[] = [];
+
+for (let i = 0; i < arcs.length; i++) {
+  const arc = arcs[i];
+  const rgb = hexToRgb(arc.color) as { r: number; g: number; b: number };
+
+  points.push({
+    size: defaultProps.pointSize,
+    order: arc.order,
+    color: arc.color,
+    lat: arc.startLat,
+    lng: arc.startLng,
+  });
+  points.push({
+    size: defaultProps.pointSize,
+    order: arc.order,
+    color: arc.color,
+    lat: arc.endLat,
+    lng: arc.endLng,
+  });
+}
     }
 
     // remove duplicates for same lat and lng
